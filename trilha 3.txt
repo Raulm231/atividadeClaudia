@@ -1,0 +1,261 @@
+1) class Veiculo {
+    mover(): void {
+        console.log("O veículo está se movendo");
+    }
+}
+
+class Carro extends Veiculo {
+    mover(): void {
+        console.log("O carro está dirigindo");
+    }
+}
+
+class Bicicleta extends Veiculo {
+    mover(): void {
+        console.log("A bicicleta está pedalando");
+    }
+}
+
+let meuCarro = new Carro();
+let minhaBicicleta = new Bicicleta();
+
+meuCarro.mover();
+minhaBicicleta.mover();
+
+2) abstract class FiguraGeometrica {
+    abstract calcularArea(): number;
+}
+
+class Circulo extends FiguraGeometrica {
+    raio: number;
+
+    constructor(raio: number) {
+        super();
+        this.raio = raio;
+    }
+
+    calcularArea(): number {
+        return Math.PI * this.raio * this.raio;
+    }
+}
+
+class Quadrado extends FiguraGeometrica {
+    lado: number;
+
+    constructor(lado: number) {
+        super();
+        this.lado = lado;
+    }
+
+    calcularArea(): number {
+        return this.lado * this.lado;
+    }
+}
+
+class Triangulo extends FiguraGeometrica {
+    base: number;
+    altura: number;
+
+    constructor(base: number, altura: number) {
+        super();
+        this.base = base;
+        this.altura = altura;
+    }
+
+    calcularArea(): number {
+        return (this.base * this.altura) / 2;
+    }
+}
+
+function imprimirAreas(figuras: FiguraGeometrica[]): void {
+    figuras.forEach(figura => {
+        console.log(`Área: ${figura.calcularArea().toFixed(2)}`);
+    });
+}
+
+let formas: FiguraGeometrica[] = [
+    new Circulo(5),
+    new Quadrado(4),
+    new Triangulo(3, 6)
+];
+
+imprimirAreas(formas);
+
+3) abstract class Pagamento {
+    abstract processar(): void;
+}
+
+class PagamentoCartao extends Pagamento {
+    numeroCartao: string;
+
+    constructor(numeroCartao: string) {
+        super();
+        this.numeroCartao = numeroCartao;
+    }
+
+    validarCartao(): boolean {
+        
+        const regex = /^\d{16}$/;
+        return regex.test(this.numeroCartao);
+    }
+
+    processar(): void {
+        if (this.validarCartao()) {
+            console.log(`Pagamento com cartão de número ${this.numeroCartao} processado com sucesso.`);
+        } else {
+            console.log(`Número do cartão inválido: ${this.numeroCartao}`);
+        }
+    }
+}
+
+class PagamentoBoleto extends Pagamento {
+    codigoBoleto: string;
+
+    constructor() {
+        super();
+        this.codigoBoleto = this.gerarCodigoBoleto();
+    }
+
+    gerarCodigoBoleto(): string {
+        
+        return Array.from({ length: 47 }, () => Math.floor(Math.random() * 10)).join('');
+    }
+
+    processar(): void {
+        console.log(`Boleto gerado com código: ${this.codigoBoleto}`);
+    }
+}
+
+function processarPagamentos(pagamentos: Pagamento[]): void {
+    pagamentos.forEach(pagamento => {
+        pagamento.processar();
+    });
+}
+
+let pagamentos: Pagamento[] = [
+    new PagamentoCartao("1234567812345678"),
+    new PagamentoCartao("1234"),
+    new PagamentoBoleto(),
+    new PagamentoBoleto()
+];
+
+processarPagamentos(pagamentos);
+
+4) abstract class Animal {
+    private energia: number;
+
+    constructor(energiaInicial: number) {
+        this.energia = energiaInicial;
+    }
+
+    protected aumentarEnergia(valor: number): void {
+        this.energia += valor;
+    }
+
+    protected diminuirEnergia(valor: number): void {
+        this.energia -= valor;
+    }
+
+    abstract comer(): void;
+
+    statusEnergia(): void {
+        console.log(`Nível de energia: ${this.energia}`);
+    }
+}
+
+class Leao extends Animal {
+    constructor(energiaInicial: number) {
+        super(energiaInicial);
+    }
+
+    comer(): void {
+        console.log("O leão está caçando...");
+        this.diminuirEnergia(10);
+        this.aumentarEnergia(20); 
+        console.log("O leão comeu e recuperou energia.");
+    }
+}
+
+class Passaro extends Animal {
+    constructor(energiaInicial: number) {
+        super(energiaInicial);
+    }
+
+    comer(): void {
+        console.log("O pássaro está se alimentando...");
+        this.aumentarEnergia(15);
+        console.log("O pássaro comeu e aumentou sua energia.");
+    }
+}
+
+function processarAnimais(animais: Animal[]): void {
+    animais.forEach(animal => {
+        animal.comer();
+        animal.statusEnergia();
+    });
+}
+
+let meusAnimais: Animal[] = [
+    new Leao(50),
+    new Passaro(30)
+];
+
+processarAnimais(meusAnimais);
+
+5) abstract class Funcionario {
+    private nome: string;
+    private salario: number;
+
+    constructor(nome: string, salario: number) {
+        this.nome = nome;
+        this.salario = salario;
+    }
+
+    getNome(): string {
+        return this.nome;
+    }
+
+    getSalario(): number {
+        return this.salario;
+    }
+
+    abstract calcularBonus(): number;
+}
+
+class Gerente extends Funcionario {
+    constructor(nome: string, salario: number) {
+        super(nome, salario);
+    }
+
+    calcularBonus(): number {
+        return this.getSalario() * 0.10;
+    }
+}
+
+class Operario extends Funcionario {
+    constructor(nome: string, salario: number) {
+        super(nome, salario);
+    }
+
+    calcularBonus(): number {
+        return this.getSalario() * 0.05;
+    }
+}
+function calcularSalarioComBonus(funcionarios: Funcionario[]): void {
+    funcionarios.forEach(funcionario => {
+        const bonus = funcionario.calcularBonus();
+        const salarioComBonus = funcionario.getSalario() + bonus;
+        console.log(`${funcionario.getNome()} - Salário: R$${funcionario.getSalario().toFixed(2)}, Bônus: R$${bonus.toFixed(2)}, Salário com Bônus: R$${salarioComBonus.toFixed(2)}`);
+    });
+}
+
+
+let funcionarios: Funcionario[] = [
+    new Gerente("Alice", 5000),
+    new Operario("Bob", 3000),
+    new Operario("Carlos", 2500)
+];
+
+calcularSalarioComBonus(funcionarios);
+
+
