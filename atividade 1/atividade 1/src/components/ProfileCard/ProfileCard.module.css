@@ -1,0 +1,27 @@
+.profileCard {
+    width: 250px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: white;
+  }
+  
+  .profilePhoto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 15px;
+  }
+  
+  .profileName {
+    margin: 0 0 5px;
+    color: #333;
+  }
+  
+  .profileDescription {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
